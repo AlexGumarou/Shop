@@ -2,6 +2,7 @@ package controller;
 
 import dao.GoodsDAO;
 import entity.Goods;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,8 @@ import java.util.List;
 // В EditGoods при пустых полях добавляет вместо ошибки - дефолтовые значения
 @Controller
 public class GoodsControllers {
-    GoodsDAO goodsDao = new GoodsDAO();
+    @Autowired
+    GoodsDAO goodsDao;
 
     @GetMapping(value = "addGoods")
     public String addGoods(){

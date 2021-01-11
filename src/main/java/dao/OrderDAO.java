@@ -4,9 +4,11 @@ import entity.Order;
 import entity.Orders;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Controller;
 import util.HibernateUtil;
 import java.util.List;
 
+@Controller
 public class OrderDAO {
     Transaction transaction = null;
 

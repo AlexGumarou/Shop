@@ -3,9 +3,11 @@ package dao;
 import entity.Goods;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Controller;
 import util.HibernateUtil;
 import java.util.List;
 
+@Controller
 public class GoodsDAO {
     Transaction transaction = null;
 

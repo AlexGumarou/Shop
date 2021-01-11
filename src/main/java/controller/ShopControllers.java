@@ -6,6 +6,7 @@ import dao.UserDAO;
 import entity.Goods;
 import entity.Order;
 import entity.PersonalData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,12 @@ import java.util.stream.Collectors;
 
 @Controller
 public class ShopControllers {
-    OrderDAO orderDao = new OrderDAO();
-    GoodsDAO goodsDao = new GoodsDAO();
-    UserDAO userDao = new UserDAO();
+    @Autowired
+    OrderDAO orderDao;
+    @Autowired
+    GoodsDAO goodsDao;
+    @Autowired
+    UserDAO userDao;
 
     @GetMapping(value = "mainWindowShop")
     public String mainWindowShop(HttpSession session){

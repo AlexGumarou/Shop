@@ -21,7 +21,7 @@
         <form:input path="pass" size="24"/><label for="pass">Password</label>
         <form:errors cssStyle="color: red" path="pass" cssClass="error"/>
     </div>
-    <p><input type="submit" value="Enter point"></p>
+    <p><input type="submit" value="Enter"></p>
 </form:form>
 </body>
 </html>

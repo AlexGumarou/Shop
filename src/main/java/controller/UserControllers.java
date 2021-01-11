@@ -3,6 +3,7 @@ package controller;
 import dao.OrderDAO;
 import dao.UserDAO;
 import entity.PersonalData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,8 +15,11 @@ import java.util.Objects;
 
 @Controller
 public class UserControllers {
-    UserDAO userDao = new UserDAO();
-    OrderDAO orderDAO = new OrderDAO();
+    @Autowired
+    UserDAO userDao;
+
+    @Autowired
+    OrderDAO orderDAO;
 
     @ModelAttribute("user")
     public PersonalData getUser(){
