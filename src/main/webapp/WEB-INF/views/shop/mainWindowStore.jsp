@@ -2,27 +2,29 @@
 <html>
 <head>
     <title>Title</title>
+    <link href="<c:url value="/resources/css/table.css"/>" rel="stylesheet">
+    <link href="<c:url value="/resources/css/form.css"/>" rel="stylesheet">
+    <link href="<c:url value="/resources/css/a.css"/>" rel="stylesheet">
 </head>
 <body>
 <div style="text-align: right;">
-    <h4>Welcome,
-        <a href="/dataCheck">${nameUser}</a>
-        <p><a href="/basket">You basket here</a></p></h4>
+    <a href="/dataCheck" class="shine-button">Welcome, ${nameUser}</a>
 </div>
 <div style="text-align: center;">
     <c:if test="${msg != null}" >
-        <font color="red">
-                ${msg}
+        <font color="white">
+            <h1>${msg}</h1>
         </font>
     </c:if>
-    <table border="0" align="center">
-        <h2>List of Goods</h2>
+    <div style="table-layout: auto">
+    <table class="table_price" border="0" style="text-align: center" align="center">
     <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Your order</th>
+        <th style="text-align: center">Name</th>
+        <th style="text-align: center">Description</th>
+        <th style="text-align: center">Quantity</th>
+        <th style="text-align: center">Price</th>
+        <th style="text-align: center">Your order</th>
+        <th style="text-align: center">Button</th>
     </tr>
     <c:forEach items="${listGoods}" var="item"  >
         <tr><td> ${item.name}</td>
@@ -33,8 +35,11 @@
         <td><input type="text" name = "qua" size="5"></td>
         <td><button type="submit" name="button" value="${item.id}">Add to basket</button></td>
         </form>
+        </tr>
     </c:forEach>
 </table>
+        <a href="/basket" class="shine-button">You basket here</a>
+    </div>
 </div>
 </body>
 </html>

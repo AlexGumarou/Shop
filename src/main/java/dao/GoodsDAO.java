@@ -4,7 +4,7 @@ import entity.Goods;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Controller;
-import util.HibernateUtil;
+import config.HibernateUtil;
 import java.util.List;
 
 @Controller

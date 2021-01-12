@@ -1,4 +1,4 @@
-package util;
+package config;
 import entity.Goods;
 import entity.Order;
 import entity.Orders;
@@ -38,7 +38,6 @@ public class HibernateUtil {
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             } catch (Exception e) {
                 e.printStackTrace();
-
             }
         } return sessionFactory;
     }
