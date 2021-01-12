@@ -1,40 +1,32 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Registration page</title>
+    <link href="<c:url value="/resources/css/form.css"/>" rel="stylesheet">
+    <link href="<c:url value="/resources/css/a.css"/>" rel="stylesheet">
+    <title>Incorrect page</title>
 </head>
 <body>
-
-<form:form action="/registrationIncorrect" method="POST" modelAttribute="user">
-    <div style="text-align: center;">
-        <h1><font color="red" This login or pass are already exist</font><br>
-            Please try again</h1>
-
-        <p><b>Enter login:</b><br>
-            <form:input path="login" size="40"/>
-            <br>
-            <form:errors cssStyle="color: red" path="login" cssClass="error"/>
-        </p>
-        <p><b>Enter pass:</b><br>
-            <form:input path="pass" size="40"/>
-            <br>
-            <form:errors cssStyle="color: red" path="pass" cssClass="error"/>
-        </p>
-        <p><b>Enter your name:</b><br>
-            <form:input path="name" size="40"/>
-            <br>
-            <form:errors cssStyle="color: red" path="name" cssClass="error"/>
-        </p>
-        <p><b>Enter your surname:</b><br>
-            <form:input path="surname" size="40"/>
-            <br>
-            <form:errors cssStyle="color: red" path="surname" cssClass="error"/>
-        </p>
-        <form:button>Register</form:button>
-    </div>
-</form:form>
-<div style="text-align: center;">
-    <p><a href="/app">back</a></p>
+<div style="text-align: right;">
+    <a href="/app" class="shine-button">Back to main</a>
 </div>
+<form:form action="/registrationIncorrect" method="POST" modelAttribute="user" class="decor">
+<div class="form-left-decoration"></div>
+<div class="form-right-decoration"></div>
+<div class="circle"></div>
+<div class="form-inner">
+    <div style="text-align: center; color: #4584D0;" >
+        <h2>This login is already exist</h2>
+    </div>
+        <form:input path="login" placeholder="login" size="24"/>
+        <form:errors cssStyle="color: red" path="login" cssClass="error"/>
+        <form:input path="pass" placeholder="password" size="24"/>
+        <form:errors cssStyle="color: red" path="pass" cssClass="error"/>
+        <form:input path="name" placeholder="name" size="24"/>
+        <form:errors cssStyle="color: red" path="name" cssClass="error"/>
+        <form:input path="surname" placeholder="surname" size="24"/>
+        <form:errors cssStyle="color: red" path="surname" cssClass="error"/>
+    <p><input type="submit" value="Registration"></p>
+    </form:form>
 </body>
 </html>

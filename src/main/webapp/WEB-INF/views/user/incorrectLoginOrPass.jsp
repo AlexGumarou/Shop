@@ -1,28 +1,29 @@
+<%@ taglib prefix="th" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
+<head>
+    <link href="<c:url value="/resources/css/form.css"/>" rel="stylesheet">
+    <link href="<c:url value="/resources/css/a.css"/>" rel="stylesheet">
+    <title>Incorrect login</title>
+</head>
 <body>
-
-<form name="test" method="post" action="/login">
-    <div style="text-align: center;">
-        <h1>Incorrect login or password</h1>
-        <h2>Please enter one more time</h2>
-        <p><b>Enter login:</b><br>
-
-            <input type="text" name="login" size="40">
-        </p>
-        <p><b>Enter pass:</b><br>
-        <p><i>(It must have 1 Main letter, 1 number minimal)</i></p>
-        <input type="text" name="pass" size="40">
-        </p>
-        <p><input type="submit" value="Send">
+<div style="text-align: right;">
+    <a href="/registration" class="shine-button">Registration</a>
+</div>
+<form:form action="/login" method="POST" modelAttribute="user" class="decor">
+<div class="form-left-decoration"></div>
+<div class="form-right-decoration"></div>
+<div class="circle"></div>
+<div class="form-inner">
+    <div style="text-align: center;color: #4584D0;">
+        <h2>Incorrect login or password</h2>
     </div>
-</form>
-
-<div style="text-align: center;">
-    <p><a href="/registration">Registration</a></p>
-</div>
-<div style="text-align: center;">
-    <p><a href="/app">back</a></p>
-</div>
+        <form:input path="login" placeholder="login" size="24"/>
+        <form:errors cssStyle="color: red" path="login" cssClass="error"/>
+        <form:input path="pass" placeholder="password" size="24"/>
+        <form:errors cssStyle="color: red" path="pass" cssClass="error"/>
+    <p><input type="submit" value="Enter"></p>
+    </form:form>
 </body>
 </html>
-

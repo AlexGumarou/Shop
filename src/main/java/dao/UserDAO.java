@@ -14,7 +14,7 @@ public class UserDAO {
     public List<PersonalData> getAllUsers() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            List<PersonalData> list = session.createQuery("from PersonalData", PersonalData.class).list();
+            List<PersonalData> list = session.createQuery("FROM PersonalData", PersonalData.class).list();
             session.getTransaction().commit();
             return list;
         } catch (Exception e) {
