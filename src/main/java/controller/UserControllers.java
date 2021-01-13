@@ -15,11 +15,14 @@ import java.util.Objects;
 
 @Controller
 public class UserControllers {
-    @Autowired
-    UserDAO userDao;
+    private final UserDAO userDao;
+    private final OrderDAO orderDAO;
 
     @Autowired
-    OrderDAO orderDAO;
+    public UserControllers (UserDAO userDao, OrderDAO orderDAO){
+        this.userDao = userDao;
+        this.orderDAO = orderDAO;
+    }
 
     @ModelAttribute("user")
     public PersonalData getUser(){

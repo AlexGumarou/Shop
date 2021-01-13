@@ -12,8 +12,12 @@ import java.util.List;
 // В EditGoods при пустых полях добавляет вместо ошибки - дефолтовые значения
 @Controller
 public class GoodsControllers {
+    private final GoodsDAO goodsDao;
+
     @Autowired
-    GoodsDAO goodsDao;
+    public GoodsControllers (GoodsDAO goodsDao){
+        this.goodsDao = goodsDao;
+    }
 
     @GetMapping(value = "addGoods")
     public String addGoods(){

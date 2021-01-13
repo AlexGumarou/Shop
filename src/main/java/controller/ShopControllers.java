@@ -16,12 +16,16 @@ import java.util.stream.Collectors;
 
 @Controller
 public class ShopControllers {
+    private final OrderDAO orderDao;
+    private final GoodsDAO goodsDao;
+    private final UserDAO userDao;
+
     @Autowired
-    OrderDAO orderDao;
-    @Autowired
-    GoodsDAO goodsDao;
-    @Autowired
-    UserDAO userDao;
+    public ShopControllers (OrderDAO orderDao, GoodsDAO goodsDao, UserDAO userDao){
+        this.orderDao = orderDao;
+        this.goodsDao = goodsDao;
+        this.userDao = userDao;
+    }
 
     @GetMapping(value = "mainWindowShop")
     public String mainWindowShop(HttpSession session){
