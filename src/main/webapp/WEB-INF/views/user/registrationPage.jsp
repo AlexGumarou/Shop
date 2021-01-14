@@ -1,14 +1,16 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <link href="<c:url value="/resources/css/form.css"/>" rel="stylesheet">
     <link href="<c:url value="/resources/css/a.css"/>" rel="stylesheet">
-    <title>Registration page</title>
+    <title><spring:message code="app.page.registration"/></title>
 </head>
 <body>
 <div style="text-align: right;">
-    <a href="/app" class="shine-button">back to main</a>
+    <a href="/app" class="shine-button"><spring:message code="app.page.back"/></a>
 </div>
 <form:form action="/registration" method="POST" modelAttribute="user" class="decor">
     <div class="form-left-decoration"></div>

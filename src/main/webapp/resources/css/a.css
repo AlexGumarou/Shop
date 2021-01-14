@@ -29,6 +29,6 @@ body {
     color: #fff;
 }
 .shine-button:hover:before {
-    left: 150px;
+    left: 250px;
     transition: .5s ease-in-out;
 }

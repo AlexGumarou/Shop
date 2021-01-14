@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.IllegalFormatException;
 import java.util.List;
 //не работает try-catch при вводе буквы вместо цифры (addGoods, editGoods). (также в mainWindowShop)
-// В EditGoods при пустых полях добавляет вместо ошибки - дефолтовые значения
+// Hibernate validator не верно работает
 @Controller
 public class GoodsControllers {
     private final GoodsDAO goodsDao;
