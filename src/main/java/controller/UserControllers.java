@@ -1,13 +1,14 @@
 package controller;
 
-import dao.OrderDAO;
-import dao.UserDAO;
 import entity.PersonalData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import service.ShopService;
+import service.UserService;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -15,14 +16,12 @@ import java.util.Objects;
 
 @Controller
 public class UserControllers {
-    private final UserDAO userDao;
-    private final OrderDAO orderDAO;
 
     @Autowired
-    public UserControllers (UserDAO userDao, OrderDAO orderDAO){
-        this.userDao = userDao;
-        this.orderDAO = orderDAO;
-    }
+    private UserService userService;
+
+    @Autowired
+    private ShopService shopService;
 
     @ModelAttribute("user")
     public PersonalData getUser(){
@@ -44,11 +43,11 @@ public class UserControllers {
         if (result.hasErrors()){
             return "user/registrationPage";
         }
-        if (userDao.isUser(user.getLogin(), user.getPass()) || user.getLogin().trim().equals("")
+        if (userService.isUser(user.getLogin(), user.getPass()) || user.getLogin().trim().equals("")
                 || user.getPass().trim().equals("") || user.getName().trim().equals("")){
             return "redirect:/registrationIncorrect";
         } else {
-            userDao.addUser(user.getLogin(), user.getPass(), user.getName(), user.getSurname());
+            userService.addUser(user.getLogin(), user.getPass(), user.getName(), user.getSurname());
             return "redirect:/app";
         }
     }
@@ -72,9 +71,9 @@ public class UserControllers {
         if (result.hasErrors()){
             return "index";
         }
-        List<PersonalData> list = userDao.getCurrentUser(user.getLogin(),user.getPass());
-        if (userDao.isUser(user.getLogin(),user.getPass())){
-            orderDAO.deleteOneOrder();
+        List<PersonalData> list = userService.getCurrentUser(user.getLogin(),user.getPass());
+        if (userService.isUser(user.getLogin(),user.getPass())){
+            shopService.deleteOneOrder();
             session.setAttribute("login", list.get(0).getLogin());
             session.setAttribute("pass", list.get(0).getPass());
             session.setAttribute("nameUser", list.get(0).getName());
@@ -100,7 +99,7 @@ public class UserControllers {
 
     @GetMapping(value = "dataCheck")
     public String dataCheck(HttpSession session){
-        if (Objects.equals(session.getAttribute("nameUser"), userDao.getAllUsers().get(0).getName())){
+        if (Objects.equals(session.getAttribute("nameUser"), userService.getAllUsers().get(0).getName())){
             return "redirect:/dataAdmin";
         } else {
             return "redirect:/data";
@@ -119,7 +118,7 @@ public class UserControllers {
 
     @RequestMapping(value = "userStore", method = {RequestMethod.POST, RequestMethod.GET})
     public String userStore(Model model){
-        List<PersonalData> list = userDao.getAllUsers();
+        List<PersonalData> list = userService.getAllUsers();
         model.addAttribute("list", list);
         model.addAttribute("max", list.size() - 1);
         return "user/userStore";
@@ -127,14 +126,14 @@ public class UserControllers {
 
     @PostMapping(value = "changeUsers")
     public String changeUsers(@RequestParam("button") String button){
-        List<PersonalData> list = userDao.getAllUsers();
+        List<PersonalData> list = userService.getAllUsers();
         if (button.equals("Delete " + 0)){
             return "redirect:/userStore";
         }
         for (int i = 1; i < list.size(); i++) {
             if (button.equals("Delete " + i)) {
                 int id = list.get(i).getId();
-                userDao.deleteUser(id);
+                userService.deleteUser(id);
                 return "redirect:/userStore";
             }
         } return "redirect:/userStore";

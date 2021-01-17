@@ -1,8 +1,5 @@
 package controller;
 
-import dao.GoodsDAO;
-import dao.OrderDAO;
-import dao.UserDAO;
 import entity.Goods;
 import entity.Order;
 import entity.PersonalData;
@@ -10,26 +7,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import service.GoodsService;
+import service.ShopService;
+import service.UserService;
+
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 public class ShopControllers {
-    private final OrderDAO orderDao;
-    private final GoodsDAO goodsDao;
-    private final UserDAO userDao;
+    @Autowired
+    private GoodsService goodsService;
 
     @Autowired
-    public ShopControllers (OrderDAO orderDao, GoodsDAO goodsDao, UserDAO userDao){
-        this.orderDao = orderDao;
-        this.goodsDao = goodsDao;
-        this.userDao = userDao;
-    }
+    private UserService userService;
+
+    @Autowired
+    private ShopService shopService;
 
     @GetMapping(value = "mainWindowShop")
     public String mainWindowShop(HttpSession session){
-        List<Goods> list = goodsDao.getAllGoods()
+        List<Goods> list = goodsService.getAllGoods()
                 .stream().filter(s->s.getQuantity()>0).collect(Collectors.toList());
         session.setAttribute("listGoods", list);
         return "shop/mainWindowStore";
@@ -38,8 +37,8 @@ public class ShopControllers {
     @PostMapping(value = "mainWindowShop")
     public String mainWindowShopPost(@RequestParam(value = "qua", defaultValue = "0") int quantity,
                                      @RequestParam(value = "button", defaultValue = "0") int button, Model model){
-        List<Goods> list = goodsDao.getAllGoods();
-        List<Order> listOrder = orderDao.getOneOrder();
+        List<Goods> list = goodsService.getAllGoods();
+        List<Order> listOrder = shopService.getOneOrder();
         try {
             for (Goods goods : list) {
                 int id = goods.getId();
@@ -59,7 +58,7 @@ public class ShopControllers {
                                 }
                                 int idOrder = order.getId();
                                 int sum = quantity * order.getPrice();
-                                orderDao.editOneOrder(idOrder, quantity, sum);
+                                shopService.editOneOrder(idOrder, quantity, sum);
                                 return "shop/mainWindowStore";
                             }
                         }
@@ -72,10 +71,10 @@ public class ShopControllers {
                                     "We have to add max we have. <br>");
                             quantity = goods.getQuantity();
                             int sum = quantity * price;
-                            orderDao.addOneOrder(name, price, quantity, sum);
+                            shopService.addOneOrder(name, price, quantity, sum);
                         } else {
                             int sum = quantity * price;
-                            orderDao.addOneOrder(name, price, quantity, sum);
+                            shopService.addOneOrder(name, price, quantity, sum);
                         }
                     }
                 } else {
@@ -90,7 +89,7 @@ public class ShopControllers {
 
     @RequestMapping(value = "basket", method = {RequestMethod.POST, RequestMethod.GET})
     public String basket(Model model){
-        List<Order> list = orderDao.getOneOrder().stream().filter(s->s.getQuantity()>0).collect(Collectors.toList());
+        List<Order> list = shopService.getOneOrder().stream().filter(s->s.getQuantity()>0).collect(Collectors.toList());
         model.addAttribute("listOrder", list);
         int sum = list.stream().mapToInt(Order::getSum).sum();
         model.addAttribute("sum",sum);
@@ -102,12 +101,12 @@ public class ShopControllers {
                          @RequestParam(value = "wayOf", defaultValue = "redirect:/basket") String wayOf){
         if (wayOf.equals("pickUp") || wayOf.equals("delivery")) {
             String user = session.getAttribute("login").toString();
-            List<Order> list = orderDao.getOneOrder().stream().filter(s->s.getQuantity()>0).collect(Collectors.toList());
-            orderDao.addOrders(user,list
+            List<Order> list = shopService.getOneOrder().stream().filter(s->s.getQuantity()>0).collect(Collectors.toList());
+            shopService.addOrders(user,list
                     .toString().replace("{", "").replace("}", "")
                     .replace(",", "").replace("[", "").replace("]", ""));
-            List<Order> listOrder = orderDao.getOneOrder();
-            List<Goods> listGoods = goodsDao.getAllGoods();
+            List<Order> listOrder = shopService.getOneOrder();
+            List<Goods> listGoods = goodsService.getAllGoods();
             for (Order order : listOrder) {
                 int quantity = order.getQuantity();
                 String name = order.getName();
@@ -115,11 +114,11 @@ public class ShopControllers {
                     if (goods.getName().equals(name)) {
                         int id = goods.getId();
                         int result = goods.getQuantity() - quantity;
-                        goodsDao.changeGoods(id, result);
+                        goodsService.changeGoods(id, result);
                     }
                 }
             }
-            orderDao.deleteOneOrder();
+            shopService.deleteOneOrder();
         } else {
             return "redirect:/basket";
         }
@@ -131,7 +130,7 @@ public class ShopControllers {
     }
     @GetMapping(value = "editBasket")
     public String editBasketGet(Model model, @RequestParam(value = "button", defaultValue = "0") int button){
-        List<Order> list = orderDao.getOneOrder();
+        List<Order> list = shopService.getOneOrder();
         for (Order order : list){
             if (order.getId() == button){
                 int id = order.getId();
@@ -150,8 +149,8 @@ public class ShopControllers {
     @PostMapping(value = "editBasket")
     public String editBasket(@RequestParam(value = "quantity", defaultValue = "0") int quantity,
                              @ModelAttribute("name") String name){
-        List<Order> list = orderDao.getOneOrder();
-        List<Goods> listGoods = goodsDao.getAllGoods();
+        List<Order> list = shopService.getOneOrder();
+        List<Goods> listGoods = goodsService.getAllGoods();
         int maxQuantity = 0;
         for (Order order : list){
             if (order.getName().equals(name)) {
@@ -162,9 +161,9 @@ public class ShopControllers {
                 }
                 if (quantity >= 0) {
                     if (quantity < maxQuantity) {
-                        orderDao.editOneOrder(order.getId(), quantity, quantity*order.getPrice());
+                        shopService.editOneOrder(order.getId(), quantity, quantity*order.getPrice());
                     } else if (quantity > maxQuantity) {
-                        orderDao.editOneOrder(order.getId(), maxQuantity, quantity*order.getPrice());
+                        shopService.editOneOrder(order.getId(), maxQuantity, quantity*order.getPrice());
                     }
                 }
             }
@@ -185,12 +184,12 @@ public class ShopControllers {
     @PostMapping(value = "deliveryFinal")
     public String deliveryFinal(@RequestParam("address") String address, @RequestParam("email") String email,
                                 @RequestParam("phone") String phone, HttpSession session){
-        List<PersonalData> list = userDao.getAllUsers();
+        List<PersonalData> list = userService.getAllUsers();
         String name =  session.getAttribute("nameUser").toString();
         for (PersonalData personalData : list) {
             if (personalData.getName().equals(name)) {
                 int id = personalData.getId();
-                userDao.setAdditionalFields(id,address,email,phone);
+                userService.setAdditionalFields(id,address,email,phone);
             }
         } return "shop/deliveryFinal";
     }
@@ -202,7 +201,7 @@ public class ShopControllers {
 
     @PostMapping(value = "orderHistory")
     public String orderHistory(Model model){
-        model.addAttribute("mapOrder", orderDao.getAllOrders());
+        model.addAttribute("mapOrder", shopService.getAllOrders());
         return "shop/orderHistory";
     }
 }

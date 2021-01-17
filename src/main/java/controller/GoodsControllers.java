@@ -1,23 +1,18 @@
 package controller;
 
-import dao.GoodsDAO;
 import entity.Goods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import service.GoodsService;
+
 import java.util.IllegalFormatException;
 import java.util.List;
-//не работает try-catch при вводе буквы вместо цифры (addGoods, editGoods). (также в mainWindowShop)
-// Hibernate validator не верно работает
 @Controller
 public class GoodsControllers {
-    private final GoodsDAO goodsDao;
-
     @Autowired
-    public GoodsControllers (GoodsDAO goodsDao){
-        this.goodsDao = goodsDao;
-    }
+    private GoodsService goodsService;
 
     @GetMapping(value = "addGoods")
     public String addGoods(){
@@ -32,7 +27,7 @@ public class GoodsControllers {
         try {
             if (quantity > 0 && price > 0 && !name.trim().equals("")
                     && !description.trim().equals("")) {
-                goodsDao.addGoods(name,description,quantity,price);
+                goodsService.addGoods(name,description,quantity,price);
                 return "redirect:/modifyGoods";
             } else {
                 return "goods/incorrectAdd";
@@ -43,7 +38,7 @@ public class GoodsControllers {
     }
     @RequestMapping(value = "modifyGoods", method = {RequestMethod.POST, RequestMethod.GET})
     public String modifyGoods(Model model){
-        List<Goods> list = goodsDao.getAllGoods();
+        List<Goods> list = goodsService.getAllGoods();
         model.addAttribute("goods", list);
         model.addAttribute("max", list.size() - 1);
         return "goods/modifyGoods";
@@ -51,18 +46,18 @@ public class GoodsControllers {
 
     @PostMapping(value = "changeGoods")
     public String changeGoods(@RequestParam(value = "button") String button){
-        List<Goods> list = goodsDao.getAllGoods();
+        List<Goods> list = goodsService.getAllGoods();
         for (int i = 0; i< list.size(); i++) {
             int id = list.get(i).getId();
             if (button.equals("Delete " + i)) {
-                goodsDao.deleteGoods(id);
+                goodsService.deleteGoods(id);
             }
         } return "redirect:/modifyGoods";
     }
 
     @GetMapping(value = "editGoods")
     public String editGoods(@RequestParam(value = "button") String button, Model model){
-        List<Goods> list = goodsDao.getAllGoods();
+        List<Goods> list = goodsService.getAllGoods();
         for (int i = 0; i< list.size(); i++) {
             if (button.equals("Edit " + i)){
                 model.addAttribute("id",list.get(i).getId());
@@ -79,11 +74,11 @@ public class GoodsControllers {
                                 @RequestParam(value = "quantity", defaultValue = "0") int quantity,
                                 @RequestParam(value = "name") String name,
                                 @RequestParam(value = "description") String description){
-        List<Goods> list = goodsDao.getAllGoods();
+        List<Goods> list = goodsService.getAllGoods();
         if (id > 0 || price > 0 || quantity > 0){
             for (Goods goods : list) {
                 if (goods.getId() == id) {
-                    goodsDao.editGoods(id, name, description, quantity, price);
+                    goodsService.editGoods(id, name, description, quantity, price);
                 }
             }
         } else {

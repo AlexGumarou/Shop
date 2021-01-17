@@ -2,69 +2,39 @@ package dao;
 
 import entity.Order;
 import entity.Orders;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.springframework.stereotype.Controller;
-import config.HibernateUtil;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
-@Controller
+@Repository
 public class OrderDAO {
-    Transaction transaction = null;
+
+    @Autowired
+    private SessionFactory sessionFactory;
 
     public List<Orders> getAllOrders() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            List<Orders> list = session.createQuery("from Orders", Orders.class).list();
-            session.getTransaction().commit();
-            return list;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } return null;
+        return sessionFactory.getCurrentSession().createQuery("from Orders", Orders.class).list();
     }
 
     public List<Order> getOneOrder() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            List<Order> list = session.createQuery("from Order", Order.class).list();
-            session.getTransaction().commit();
-            return list;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } return null;
+        return sessionFactory.getCurrentSession().createQuery("from Order", Order.class).list();
     }
 
     public void addOneOrder(String name, int price, int quantity, int sum) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.save(new Order(name,price,quantity,sum));
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        sessionFactory.getCurrentSession().save(new Order(name,price,quantity,sum));
     }
 
     public void editOneOrder(int id, int quantity, int sum) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            Order order = session.get(Order.class, id);
-            order.setQuantity(quantity);
-            order.setSum(sum);
-            session.update(order);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Order order = sessionFactory.getCurrentSession().get(Order.class, id);
+        order.setQuantity(quantity);
+        order.setSum(sum);
+        sessionFactory.getCurrentSession().update(order);
     }
 
     public void deleteOneOrder() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.createQuery("delete from Order").executeUpdate();
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        sessionFactory.getCurrentSession().createQuery("delete from Order").executeUpdate();
     }
 
     private static java.sql.Date getCurrentDate() {
@@ -73,12 +43,6 @@ public class OrderDAO {
     }
 
     public void addOrders(String users, String orders) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.save(new Orders(users, orders, getCurrentDate()));
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        sessionFactory.getCurrentSession().save(new Orders(users, orders, getCurrentDate()));
     }
 }

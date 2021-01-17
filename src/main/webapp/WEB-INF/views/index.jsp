@@ -23,7 +23,6 @@
         <form:input path="pass" placeholder="password" size="24"/>
         <form:errors cssStyle="color: red" path="pass" cssClass="error"/>
     <p><input type="submit" value="Enter"></p>
-
 </form:form>
             <div style="text-align: center;">
             <a href="/registration" class="shine-button" style="width: 240px"><spring:message code="app.registration"/></a>
