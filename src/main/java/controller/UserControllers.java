@@ -126,16 +126,7 @@ public class UserControllers {
 
     @PostMapping(value = "changeUsers")
     public String changeUsers(@RequestParam("button") String button){
-        List<PersonalData> list = userService.getAllUsers();
-        if (button.equals("Delete " + 0)){
-            return "redirect:/userStore";
-        }
-        for (int i = 1; i < list.size(); i++) {
-            if (button.equals("Delete " + i)) {
-                int id = list.get(i).getId();
-                userService.deleteUser(id);
-                return "redirect:/userStore";
-            }
-        } return "redirect:/userStore";
+        userService.deleteUser(button);
+        return "redirect:/userStore";
     }
 }

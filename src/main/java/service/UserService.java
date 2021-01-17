@@ -30,12 +30,19 @@ public class UserService {
     public List<PersonalData> getCurrentUser(String login, String pass) {
         return userDAO.getCurrentUser(login, pass);
     }
-    @Transactional
-    public void deleteUser(int id) {
-        userDAO.deleteUser(id);
-    }
+
     @Transactional
     public void setAdditionalFields(int id, String address, String email, String phone) {
         userDAO.setAdditionalFields(id, address, email, phone);
+    }
+    @Transactional
+    public void deleteUser(String button){
+        List<PersonalData> list = getAllUsers();
+        for (int i = 1; i < list.size(); i++) {
+            if (button.equals("Delete " + i)) {
+                int id = list.get(i).getId();
+                userDAO.deleteUser(id);
+            }
+        }
     }
 }
