@@ -2,7 +2,7 @@ package config;
 import java.util.Properties;
 
 import entity.Goods;
-import entity.Order;
+import entity.OrderOne;
 import entity.Orders;
 import entity.PersonalData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class AppConfig {
         properties.put(HBM2DDL_AUTO, env.getProperty("hibernate.hbm2ddl.auto"));
         properties.put(DIALECT, env.getProperty("hibernate.dialect"));
         factoryBean.setHibernateProperties(properties);
-        factoryBean.setAnnotatedClasses(PersonalData.class, Goods.class, Order.class, Orders.class);
+        factoryBean.setAnnotatedClasses(PersonalData.class, Goods.class, OrderOne.class, Orders.class);
         return factoryBean;
     }
 

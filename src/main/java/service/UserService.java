@@ -32,8 +32,14 @@ public class UserService {
     }
 
     @Transactional
-    public void setAdditionalFields(int id, String address, String email, String phone) {
-        userDAO.setAdditionalFields(id, address, email, phone);
+    public void setAdditionalFields(String name, String address, String email, String phone) {
+        List<PersonalData> list = getAllUsers();
+        for (PersonalData personalData : list) {
+            if (personalData.getName().equals(name)) {
+                int id = personalData.getId();
+                userDAO.setAdditionalFields(id,address,email,phone);
+            }
+        }
     }
     @Transactional
     public void deleteUser(String button){

@@ -1,5 +1,5 @@
 <%@ page import="dao.OrderDAO" %>
-<%@ page import="entity.Order" %>
+<%@ page import="entity.OrderOne" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>

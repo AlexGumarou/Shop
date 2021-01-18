@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table (name = "orderone")
-public class Order {
+public class OrderOne {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private int id;
@@ -13,7 +13,7 @@ public class Order {
     private int quantity;
     private int sum;
 
-    public Order(int id, String name, int price, int quantity, int sum) {
+    public OrderOne(int id, String name, int price, int quantity, int sum) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -21,10 +21,10 @@ public class Order {
         this.sum = sum;
     }
 
-    public Order() {
+    public OrderOne() {
     }
 
-    public Order(String name, int price, int quantity, int sum) {
+    public OrderOne(String name, int price, int quantity, int sum) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;

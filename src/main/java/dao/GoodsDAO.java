@@ -15,8 +15,7 @@ public class GoodsDAO {
     private SessionFactory sessionFactory;
 
     public List<Goods> getAllGoods() {
-        TypedQuery<Goods> query = sessionFactory.getCurrentSession().createQuery("FROM Goods", Goods.class);
-        return query.getResultList();
+        return sessionFactory.getCurrentSession().createQuery("FROM Goods", Goods.class).list();
     }
 
     public void addGoods(String name, String description, int quantity, int price) {

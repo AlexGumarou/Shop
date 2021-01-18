@@ -1,6 +1,6 @@
 package dao;
 
-import entity.Order;
+import entity.OrderOne;
 import entity.Orders;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,23 +18,23 @@ public class OrderDAO {
         return sessionFactory.getCurrentSession().createQuery("from Orders", Orders.class).list();
     }
 
-    public List<Order> getOneOrder() {
-        return sessionFactory.getCurrentSession().createQuery("from Order", Order.class).list();
+    public List<OrderOne> getOneOrder() {
+        return sessionFactory.getCurrentSession().createQuery("from OrderOne", OrderOne.class).list();
     }
 
     public void addOneOrder(String name, int price, int quantity, int sum) {
-        sessionFactory.getCurrentSession().save(new Order(name,price,quantity,sum));
+        sessionFactory.getCurrentSession().save(new OrderOne(name,price,quantity,sum));
     }
 
     public void editOneOrder(int id, int quantity, int sum) {
-        Order order = sessionFactory.getCurrentSession().get(Order.class, id);
+        OrderOne order = sessionFactory.getCurrentSession().get(OrderOne.class, id);
         order.setQuantity(quantity);
         order.setSum(sum);
         sessionFactory.getCurrentSession().update(order);
     }
 
     public void deleteOneOrder() {
-        sessionFactory.getCurrentSession().createQuery("delete from Order").executeUpdate();
+        sessionFactory.getCurrentSession().createQuery("delete from OrderOne").executeUpdate();
     }
 
     private static java.sql.Date getCurrentDate() {
