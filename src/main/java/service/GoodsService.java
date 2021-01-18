@@ -11,9 +11,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class GoodsService {
+    private GoodsDAO goodsDAO;
 
     @Autowired
-    private GoodsDAO goodsDAO;
+    public void setGoodsDAO(GoodsDAO goodsDAO) {
+        this.goodsDAO = goodsDAO;
+    }
 
     @Transactional
     public List<Goods> getAllGoods() {

@@ -8,25 +8,35 @@ import entity.Orders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ShopService {
-    @Autowired
     private OrderDAO orderDAO;
-    @Autowired
     private GoodsDAO goodsDAO;
+
+    @Autowired
+    public void setOrderDAO(OrderDAO orderDAO) {
+        this.orderDAO = orderDAO;
+    }
+
+    @Autowired
+    public void setGoodsDAO(GoodsDAO goodsDAO) {
+        this.goodsDAO = goodsDAO;
+    }
+
     @Transactional
     public void deleteOneOrder() {
         orderDAO.deleteOneOrder();
     }
+
     @Transactional
     public List<OrderOne> getOneOrder() {
         return orderDAO.getOneOrder();
     }
+
     @Transactional
     public void addOneOrder(String name, int price, int quantity, int sum) {
         orderDAO.addOneOrder(name, price, quantity, sum);
@@ -35,10 +45,12 @@ public class ShopService {
     public void editOneOrder(int id, int quantity, int sum) {
         orderDAO.editOneOrder(id, quantity, sum);
     }
+
     @Transactional
     public List<Orders> getAllOrders() {
         return orderDAO.getAllOrders();
     }
+
     @Transactional
     public String mainShopPage(String quantity, String button){
         List<Goods> list = goodsDAO.getAllGoods();
@@ -85,14 +97,17 @@ public class ShopService {
                 }
             } return a;
     }
+
     @Transactional
     public List<OrderOne> listOrder(){
         return getOneOrder().stream().filter(s->s.getQuantity()>0).collect(Collectors.toList());
     }
+
     @Transactional
     public int count(){
         return listOrder().stream().mapToInt(OrderOne::getSum).sum();
     }
+
     @Transactional
     public void choice(String login){
         List<OrderOne> list = orderDAO.getOneOrder().stream().filter(s->s.getQuantity()>0).collect(Collectors.toList());
@@ -114,6 +129,7 @@ public class ShopService {
         }
         orderDAO.deleteOneOrder();
     }
+
     @Transactional
     public void editBasket(String quantity, String name){
         int qua = Integer.parseInt(quantity);

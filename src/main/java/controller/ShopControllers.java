@@ -14,14 +14,22 @@ import java.util.List;
 
 @Controller
 public class ShopControllers {
-    @Autowired
     private GoodsService goodsService;
-
-    @Autowired
     private UserService userService;
+    private ShopService shopService;
 
     @Autowired
-    private ShopService shopService;
+    public void setGoodsService(GoodsService goodsService) {
+        this.goodsService = goodsService;
+    }
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+    @Autowired
+    public void setShopService(ShopService shopService) {
+        this.shopService = shopService;
+    }
 
     @GetMapping(value = "mainWindowShop")
     public String mainWindowShop(HttpSession session){

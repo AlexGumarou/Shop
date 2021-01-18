@@ -1,7 +1,4 @@
-<%@ page import="java.util.List" %>
-<%@ page import="entity.Orders" %>
-<%@ page import="dao.OrderDAO" %>
-<%@ page import="dao.OrderDAO" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Title</title>
@@ -21,22 +18,15 @@
             <th>Date</th>
             <th>Order description</th>
         </tr>
-                <%
-                    OrderDAO orderDao = new OrderDAO();
-                    List<Orders> list = orderDao.getAllOrders();
-        if (list.isEmpty()){
-            out.print("Нет заказов на данный момент" + "<br>");
-        } else {
-            for (Orders orders : list) {
-                if (orders.getUsers().equals(request.getSession().getAttribute("login"))) {
-                    out.print("<tr><td>" + orders.getId() + "</td>");
-                    out.print("<td>" + orders.getDate() + "</td>");
-                    out.print("<td>" + orders.getOrders() + "</td></tr>");
-                }
-            }
-        }
-%>
 
+
+        <c:forEach items="${mapOrder}" var="item"  >
+            <tr><td> ${item.id}</td>
+                <td> ${item.date}</td>
+                <td> ${item.orders}</td>
+            </tr>
+        </c:forEach>
     </table>
+</div>
 </body>
 </html>

@@ -10,8 +10,12 @@ import service.GoodsService;
 import java.util.List;
 @Controller
 public class GoodsControllers {
-    @Autowired
     private GoodsService goodsService;
+
+    @Autowired
+    public void setGoodsService(GoodsService goodsService) {
+        this.goodsService = goodsService;
+    }
 
     @GetMapping(value = "addGoods")
     public String addGoods(){

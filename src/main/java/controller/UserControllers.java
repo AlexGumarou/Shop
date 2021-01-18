@@ -16,12 +16,18 @@ import java.util.Objects;
 
 @Controller
 public class UserControllers {
-
-    @Autowired
     private UserService userService;
+    private ShopService shopService;
 
     @Autowired
-    private ShopService shopService;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Autowired
+    public void setShopService(ShopService shopService) {
+        this.shopService = shopService;
+    }
 
     @ModelAttribute("user")
     public PersonalData getUser(){

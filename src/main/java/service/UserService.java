@@ -4,28 +4,33 @@ import dao.UserDAO;
 import entity.PersonalData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
 public class UserService {
+    private UserDAO userDAO;
 
     @Autowired
-    private UserDAO userDAO;
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     @Transactional
     public List<PersonalData> getAllUsers() {
         return userDAO.getAllUsers();
     }
+
     @Transactional
     public boolean isUser(String login, String pass) {
         return userDAO.isUser(login,pass);
     }
+
     @Transactional
     public void addUser(String login, String pass, String name, String surname) {
         userDAO.addUser(login, pass, name, surname);
     }
+
     @Transactional
     public List<PersonalData> getCurrentUser(String login, String pass) {
         return userDAO.getCurrentUser(login, pass);
@@ -41,6 +46,7 @@ public class UserService {
             }
         }
     }
+
     @Transactional
     public void deleteUser(String button){
         List<PersonalData> list = getAllUsers();
